@@ -2,12 +2,23 @@ import { Request, Response, NextFunction } from "express";
 import User, { IUser } from "../models/User";
 import { verifyToken } from "../utils/jwt";
 
-export interface AuthRequest extends Request {
-  user?: IUser;
+// Passport already augments Express.Request with a `user?: Express.User`
+// property. Rather than re-declaring `user` on Request (which conflicts
+// with Passport's declaration), we extend Passport's Express.User
+// interface itself so it carries all of IUser's fields.
+declare global {
+  namespace Express {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface User extends IUser {}
+  }
 }
 
+// Alias kept so existing `import { AuthRequest }` usages elsewhere
+// (adminController.ts, adminRoutes.ts) don't need to change.
+export type AuthRequest = Request;
+
 export const authenticate = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -58,7 +69,7 @@ export const authenticate = async (
 };
 
 export const requireAdmin = (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void => {

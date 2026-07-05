@@ -1,114 +1,84 @@
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import MobileBottomNav from "@/components/MobileBottomNav";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import {
-  Users,
-  Briefcase,
-  Building2,
-  MessageSquare,
-  Settings,
-} from "lucide-react";
+// frontend/src/pages/admin/Dashboard.tsx
 
-const AdminDashboard = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+import { useState, useEffect } from "react";
+import { Briefcase, CalendarDays, Rocket } from "lucide-react";
+import DashboardCard from "@/components/admin/DashboardCard";
+import { adminDashboardAPI } from "@/services/api";
+import type { DashboardStats } from "@/types/admin.types";
 
-  // Redirect if not admin
-  if (!user?.isAdmin) {
-    navigate("/");
-    return null;
-  }
+const Dashboard = () => {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    adminDashboardAPI
+      .getStats()
+      .then((res) => setStats(res.data))
+      .catch(() => {
+        /* silently degrade — cards render with "—" */
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const cards = [
+    {
+      title: "Jobs",
+      description:
+        "Post opportunities, edit listings, set active/inactive status, and manage applications.",
+      href: "/admin/jobs",
+      icon: Briefcase,
+      total: stats?.totalJobs,
+      activeCount: stats?.activeJobs,
+      accentColor: "primary" as const,
+    },
+    {
+      title: "Events",
+      description:
+        "Create events, manage registrations, build custom question forms, and track status.",
+      href: "/admin/events",
+      icon: CalendarDays,
+      total: stats?.totalEvents,
+      activeCount: stats?.activeEvents,
+      accentColor: "accent" as const,
+    },
+    {
+      title: "Startups",
+      description:
+        "Showcase incubated and accelerated startups with founder profiles and funding info.",
+      href: "/admin/startups",
+      icon: Rocket,
+      total: stats?.totalStartups,
+      activeCount: stats?.activeStartups,
+      accentColor: "primary" as const,
+    },
+  ];
 
   return (
-    <div className="min-h-screen pb-20 lg:pb-0">
-      <Navigation />
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Welcome back</h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          Manage your society's content from the panels below.
+        </p>
+      </div>
 
-      {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-primary/10 to-accent/10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Admin <span className="text-primary">Dashboard</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Manage your society website content, users, and communications.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Admin Cards */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {adminCards.map((card, index) => {
-              const IconComponent = card.icon;
-              return (
-                <Card
-                  key={index}
-                  className="hover:shadow-lg transition-shadow cursor-pointer"
-                >
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-lg bg-muted`}>
-                        <IconComponent className={`h-6 w-6 ${card.color}`} />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">{card.title}</CardTitle>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4">
-                      {card.description}
-                    </p>
-                    <Button
-                      className="w-full"
-                      onClick={() => navigate(card.href)}
-                    >
-                      Manage
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Stats */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <h3 className="text-3xl font-bold text-primary mb-2">12</h3>
-              <p className="text-muted-foreground">Total Jobs</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary mb-2">8</h3>
-              <p className="text-muted-foreground">Active Startups</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary mb-2">25</h3>
-              <p className="text-muted-foreground">Contact Messages</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary mb-2">150</h3>
-              <p className="text-muted-foreground">Registered Users</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-      <MobileBottomNav />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        {cards.map((card) => (
+          <DashboardCard
+            key={card.href}
+            title={card.title}
+            description={card.description}
+            href={card.href}
+            icon={card.icon}
+            total={card.total}
+            activeCount={card.activeCount}
+            isLoading={isLoading}
+            accentColor={card.accentColor}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default Dashboard;

@@ -11,10 +11,10 @@ import "./config/passport";
 
 // Routes
 import authRoutes from "./routes/authRoutes";
-import jobRoutes from "./routes/jobRoutes";
-import startupRoutes from "./routes/startupRoutes";
 import contactRoutes from "./routes/contactRoutes";
+import adminRoutes from "./routes/adminRoutes";
 import eventRoutes from "./routes/eventRoutes";
+
 
 // Middleware
 import { errorHandler } from "./middleware/errorHandler";
@@ -96,11 +96,9 @@ app.use(passport.initialize());
 ----------------------------- */
 
 app.use("/api/auth", authRoutes);
-app.use("/api/jobs", jobRoutes);
-app.use("/api/startups", startupRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/events", eventRoutes);
-
 /* ----------------------------
    Health Check
 ----------------------------- */

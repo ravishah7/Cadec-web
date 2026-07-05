@@ -23,6 +23,12 @@ import Jobs from "./pages/Jobs";
 import Contact from "./pages/Contact";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
+import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
+import AdminLayout from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import ManageJobs from "./pages/admin/ManageJobs";
+import ManageEvents from "./pages/admin/ManageEvents";
+import ManageStartups from "./pages/admin/ManageStartups";
 
 const queryClient = new QueryClient();
 
@@ -48,15 +54,15 @@ const App = () => (
               <Route path="/auth/callback" element={<AuthCallback />} />
 
               {/* Redirect admin pages to home */}
-              <Route
-                path="/admin"
-                element={<Navigate to="/" replace />}
-              />
-
-              <Route
-                path="/admin/jobs"
-                element={<Navigate to="/" replace />}
-              />
+             {/* ── Admin Module ────────────────────────────── */}
+                <Route element={<ProtectedAdminRoute />}>
+                  <Route element={<AdminLayout />}>
+                    <Route path="/admin"          element={<Dashboard />} />
+                    <Route path="/admin/jobs"     element={<ManageJobs />} />
+                    <Route path="/admin/events"   element={<ManageEvents />} />
+                    <Route path="/admin/startups" element={<ManageStartups />} />
+                  </Route>
+                </Route>
 
               {/* 404 */}
               <Route path="*" element={<NotFound />} />
