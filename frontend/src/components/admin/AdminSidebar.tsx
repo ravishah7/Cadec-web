@@ -1,6 +1,6 @@
 // frontend/src/components/admin/AdminSidebar.tsx
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Briefcase,
@@ -9,6 +9,7 @@ import {
   LogOut,
   X,
   ChevronRight,
+  Info,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,11 @@ interface AdminSidebarProps {
 }
 
 const navItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard, end: true },
-  { label: "Jobs",      href: "/admin/jobs",     icon: Briefcase,   end: false },
-  { label: "Events",    href: "/admin/events",   icon: CalendarDays, end: false },
-  { label: "Startups",  href: "/admin/startups", icon: Rocket,      end: false },
+  { label: "Dashboard", href: "/admin",          icon: LayoutDashboard, end: true  },
+  { label: "Jobs",      href: "/admin/jobs",      icon: Briefcase,       end: false },
+  { label: "Events",    href: "/admin/events",    icon: CalendarDays,    end: false },
+  { label: "Startups",  href: "/admin/startups",  icon: Rocket,          end: false },
+  { label: "About",     href: "/admin/about",     icon: Info,            end: false },
 ] as const;
 
 const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
@@ -59,7 +61,8 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
       >
         {/* Brand header */}
         <div className="flex items-center justify-between p-4 border-b h-14">
-          <div className="flex items-center gap-2">
+          
+          <Link className="flex items-center gap-2" to={"/"}>
             <img src={logo} alt="CADEC PGDAV" className="h-8 w-8" />
             <div className="leading-tight">
               <p className="font-bold text-sm">
@@ -70,7 +73,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
                 Admin
               </p>
             </div>
-          </div>
+          </Link>
           <Button
             variant="ghost"
             size="icon"

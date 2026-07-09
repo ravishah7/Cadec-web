@@ -195,3 +195,51 @@ export interface DashboardStats {
   totalStartups: number;
   activeStartups: number;
 }
+
+/* ----------------------------------------
+   About Page Content
+-----------------------------------------*/
+export interface FacultyMember {
+  _id?: string;
+  name: string;
+  role: string;
+  department: string;
+}
+
+export interface StudentCoordinator {
+  _id?: string;
+  name: string;
+  role: string;
+  department: string;
+}
+
+export interface MajorEvent {
+  _id?: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface CompetitionWinner {
+  _id?: string;
+  name: string;
+  startup: string;
+  position: string;
+  amount: string;
+}
+
+export interface Competition {
+  _id?: string;
+  title: string;
+  subtitle: string;
+  winners: CompetitionWinner[];
+}
+
+export interface AboutContent {
+  _id: string;
+  facultyMembers: FacultyMember[];
+  studentCoordinators: StudentCoordinator[];
+  majorEvents: MajorEvent[];
+  competitions: Competition[];
+  updatedAt: string;
+}

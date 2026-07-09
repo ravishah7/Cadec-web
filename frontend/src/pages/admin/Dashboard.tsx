@@ -1,7 +1,7 @@
 // frontend/src/pages/admin/Dashboard.tsx
 
 import { useState, useEffect } from "react";
-import { Briefcase, CalendarDays, Rocket } from "lucide-react";
+import { Briefcase, CalendarDays, Rocket, Info } from "lucide-react";
 import DashboardCard from "@/components/admin/DashboardCard";
 import { adminDashboardAPI } from "@/services/api";
 import type { DashboardStats } from "@/types/admin.types";
@@ -50,6 +50,16 @@ const Dashboard = () => {
       total: stats?.totalStartups,
       activeCount: stats?.activeStartups,
       accentColor: "primary" as const,
+    },
+    {
+      title: "About",
+      description:
+        "Manage faculty members, student coordinators, major events, and competition winners displayed on the About page.",
+      href: "/admin/about",
+      icon: Info,
+      total: undefined,
+      activeCount: undefined,
+      accentColor: "accent" as const,
     },
   ];
 

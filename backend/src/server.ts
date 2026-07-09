@@ -14,10 +14,13 @@ import authRoutes from "./routes/authRoutes";
 import contactRoutes from "./routes/contactRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import eventRoutes from "./routes/eventRoutes";
+import jobRoutes from "./routes/jobRoutes";
 
 
 // Middleware
 import { errorHandler } from "./middleware/errorHandler";
+import startupRoutes from "./routes/startupRoutes";
+import aboutRoutes from "./routes/aboutRoutes";
 
 const app = express();
 
@@ -99,6 +102,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/startups", startupRoutes);
+app.use("/api/about", aboutRoutes);
+
 /* ----------------------------
    Health Check
 ----------------------------- */

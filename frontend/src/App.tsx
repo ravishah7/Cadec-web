@@ -29,6 +29,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import ManageJobs from "./pages/admin/ManageJobs";
 import ManageEvents from "./pages/admin/ManageEvents";
 import ManageStartups from "./pages/admin/ManageStartups";
+import ManageAbout from "./pages/admin/ManageAbout";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              
 
               {/* Redirect admin pages to home */}
              {/* ── Admin Module ────────────────────────────── */}
@@ -61,6 +63,7 @@ const App = () => (
                     <Route path="/admin/jobs"     element={<ManageJobs />} />
                     <Route path="/admin/events"   element={<ManageEvents />} />
                     <Route path="/admin/startups" element={<ManageStartups />} />
+                    <Route path="/admin/about" element={<ManageAbout />} />
                   </Route>
                 </Route>
 

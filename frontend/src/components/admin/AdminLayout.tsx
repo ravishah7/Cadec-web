@@ -10,6 +10,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/admin/jobs":     "Manage Jobs",
   "/admin/events":   "Manage Events",
   "/admin/startups": "Manage Startups",
+  "/admin/about":    "Manage About Page",
 };
 
 const AdminLayout = () => {

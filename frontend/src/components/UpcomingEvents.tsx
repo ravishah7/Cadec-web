@@ -309,8 +309,6 @@ const Events = () => {
         </div>
       </section>
 
-      <Footer />
-      <MobileBottomNav />
 
       {/* Registration Form Modal */}
       {showRegistrationForm && selectedEvent && (

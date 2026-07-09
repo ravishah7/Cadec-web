@@ -14,6 +14,15 @@ import type {
   DashboardStats,
 } from "@/types/admin.types";
 
+import type {
+  AboutContent,
+  FacultyMember,
+  StudentCoordinator,
+  MajorEvent,
+  Competition,
+  CompetitionWinner,
+} from "@/types/admin.types";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 /* ------------------------------------------------
@@ -231,6 +240,70 @@ export const adminStartupsAPI = {
 
   deleteStartup: (id: string) =>
     api.delete<MessageResponse>(`/api/admin/startups/${id}`),
+};
+
+
+/* ================================================
+   PUBLIC — About
+================================================ */
+export const aboutAPI = {
+  getContent: () =>
+    api.get<{ success: boolean; data: AboutContent }>("/api/about"),
+};
+
+/* ================================================
+   ADMIN — About
+================================================ */
+export const adminAboutAPI = {
+  // Get full content
+  getContent: () =>
+    api.get<{ success: boolean; data: AboutContent }>("/api/admin/about"),
+
+  // Faculty
+  addFaculty: (data: Omit<FacultyMember, "_id">) =>
+    api.post<{ success: boolean; data: AboutContent }>("/api/admin/about/faculty", data),
+  updateFaculty: (id: string, data: Omit<FacultyMember, "_id">) =>
+    api.put<{ success: boolean; data: AboutContent }>(`/api/admin/about/faculty/${id}`, data),
+  deleteFaculty: (id: string) =>
+    api.delete<{ success: boolean; data: AboutContent }>(`/api/admin/about/faculty/${id}`),
+
+  // Student Coordinators
+  addCoordinator: (data: Omit<StudentCoordinator, "_id">) =>
+    api.post<{ success: boolean; data: AboutContent }>("/api/admin/about/coordinators", data),
+  updateCoordinator: (id: string, data: Omit<StudentCoordinator, "_id">) =>
+    api.put<{ success: boolean; data: AboutContent }>(`/api/admin/about/coordinators/${id}`, data),
+  deleteCoordinator: (id: string) =>
+    api.delete<{ success: boolean; data: AboutContent }>(`/api/admin/about/coordinators/${id}`),
+
+  // Major Events
+  addEvent: (data: Omit<MajorEvent, "_id">) =>
+    api.post<{ success: boolean; data: AboutContent }>("/api/admin/about/events", data),
+  updateEvent: (id: string, data: Omit<MajorEvent, "_id">) =>
+    api.put<{ success: boolean; data: AboutContent }>(`/api/admin/about/events/${id}`, data),
+  deleteEvent: (id: string) =>
+    api.delete<{ success: boolean; data: AboutContent }>(`/api/admin/about/events/${id}`),
+
+  // Competitions
+  addCompetition: (data: Omit<Competition, "_id">) =>
+    api.post<{ success: boolean; data: AboutContent }>("/api/admin/about/competitions", data),
+  updateCompetition: (id: string, data: Omit<Competition, "_id">) =>
+    api.put<{ success: boolean; data: AboutContent }>(`/api/admin/about/competitions/${id}`, data),
+  deleteCompetition: (id: string) =>
+    api.delete<{ success: boolean; data: AboutContent }>(`/api/admin/about/competitions/${id}`),
+
+  // Winners inside a competition
+  addWinner: (competitionId: string, data: Omit<CompetitionWinner, "_id">) =>
+    api.post<{ success: boolean; data: AboutContent }>(
+      `/api/admin/about/competitions/${competitionId}/winners`, data
+    ),
+  updateWinner: (competitionId: string, winnerId: string, data: Omit<CompetitionWinner, "_id">) =>
+    api.put<{ success: boolean; data: AboutContent }>(
+      `/api/admin/about/competitions/${competitionId}/winners/${winnerId}`, data
+    ),
+  deleteWinner: (competitionId: string, winnerId: string) =>
+    api.delete<{ success: boolean; data: AboutContent }>(
+      `/api/admin/about/competitions/${competitionId}/winners/${winnerId}`
+    ),
 };
 
 export default api;

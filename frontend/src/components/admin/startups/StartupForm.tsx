@@ -69,12 +69,24 @@ const StartupForm = ({ startup, onSubmit, onCancel, isSubmitting }: StartupFormP
     set("founders", form.founders.filter((f) => f !== name));
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.yearFounded) {
-      return; // yearFounded is required
-    }
-    await onSubmit(form);
-  };
+  e.preventDefault();
+  if (!form.yearFounded) {
+    return; // yearFounded is required
+  }
+
+  // Flush any founder name still sitting in the input but not yet added
+  const pending = founderInput.trim();
+  const finalFounders =
+    pending && !form.founders.includes(pending)
+      ? [...form.founders, pending]
+      : form.founders;
+
+  const success = await onSubmit({ ...form, founders: finalFounders });
+
+  if (success) {
+    setFounderInput("");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">

@@ -1,5 +1,6 @@
 // frontend/src/components/admin/DashboardCard.tsx
 
+import { type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { LucideIcon, ArrowRight, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +18,7 @@ interface DashboardCardProps {
   accentColor?: "primary" | "accent";
 }
 
-const DashboardCard = ({
+const DashboardCard: FC<DashboardCardProps> = ({
   title,
   description,
   href,
@@ -26,7 +27,7 @@ const DashboardCard = ({
   activeCount,
   isLoading = false,
   accentColor = "primary",
-}: DashboardCardProps) => {
+}) => {
   const navigate = useNavigate();
 
   return (
