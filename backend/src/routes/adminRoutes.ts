@@ -23,6 +23,14 @@ import {
 } from "../controllers/aboutController";
 
 
+import {
+  addGalleryItem,
+  updateGalleryItem,
+  toggleGalleryItem,
+  deleteGalleryItem,
+  getGalleryContent as getAdminGallery,
+} from "../controllers/galleryController";
+
 
 const router = Router();
 
@@ -83,5 +91,13 @@ router.delete("/about/competitions/:id", deleteCompetition);
 router.post("/about/competitions/:competitionId/winners",              addWinner);
 router.put("/about/competitions/:competitionId/winners/:winnerId",     updateWinner);
 router.delete("/about/competitions/:competitionId/winners/:winnerId",  deleteWinner);
+
+//Gallery
+
+router.get("/gallery",                              getAdminGallery);
+router.post("/gallery/:section",                    addGalleryItem);
+router.put("/gallery/:section/:id",                 updateGalleryItem);
+router.patch("/gallery/:section/:id/toggle",        toggleGalleryItem);
+router.delete("/gallery/:section/:id",              deleteGalleryItem);
 
 export default router;

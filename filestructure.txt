@@ -10,25 +10,35 @@
             |-- database.ts
             |-- passport.ts
         |-- controllers
+            |-- aboutController.ts
             |-- adminController.ts
             |-- authController.ts
             |-- contactController.ts
             |-- eventController.ts
+            |-- galleryController.ts
+            |-- jobController.ts
+            |-- startupController.ts
         |-- middleware
             |-- auth.ts
             |-- errorHandler.ts
         |-- models
+            |-- AboutContent.ts
             |-- Contact.ts
             |-- Event.ts
             |-- EventRegistration.ts
+            |-- GalleryContent.ts
             |-- Job.ts
             |-- Startup.ts
             |-- User.ts
         |-- routes
+            |-- aboutRoutes.ts
             |-- adminRoutes.ts
             |-- authRoutes.ts
             |-- contactRoutes.ts
             |-- eventRoutes.ts
+            |-- galleryRoutes.ts
+            |-- jobRoutes.ts
+            |-- startupRoutes.ts
         |-- server.ts
         |-- services
             |-- emailService.ts
@@ -158,7 +168,9 @@
             |-- About.tsx
             |-- admin
                 |-- Dashboard.tsx
+                |-- ManageAbout.tsx
                 |-- ManageEvents.tsx
+                |-- ManageGallery.tsx
                 |-- ManageJobs.tsx
                 |-- ManageStartups.tsx
             |-- AuthCallback.tsx

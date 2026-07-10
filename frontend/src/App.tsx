@@ -30,6 +30,7 @@ import ManageJobs from "./pages/admin/ManageJobs";
 import ManageEvents from "./pages/admin/ManageEvents";
 import ManageStartups from "./pages/admin/ManageStartups";
 import ManageAbout from "./pages/admin/ManageAbout";
+import ManageGallery from "./pages/admin/ManageGallery";
 
 const queryClient = new QueryClient();
 
@@ -64,7 +65,8 @@ const App = () => (
                     <Route path="/admin/events"   element={<ManageEvents />} />
                     <Route path="/admin/startups" element={<ManageStartups />} />
                     <Route path="/admin/about" element={<ManageAbout />} />
-                  </Route>
+                    <Route path="/admin/gallery" element={<ManageGallery />} />
+                    </Route>
                 </Route>
 
               {/* 404 */}

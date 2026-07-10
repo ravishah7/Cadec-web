@@ -1,4 +1,4 @@
-// frontend/src/services/api.ts
+
 
 import axios from "axios";
 import type {
@@ -22,6 +22,9 @@ import type {
   Competition,
   CompetitionWinner,
 } from "@/types/admin.types";
+
+
+import type { GalleryContent, GalleryItem, GallerySection } from "@/types/admin.types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -303,6 +306,53 @@ export const adminAboutAPI = {
   deleteWinner: (competitionId: string, winnerId: string) =>
     api.delete<{ success: boolean; data: AboutContent }>(
       `/api/admin/about/competitions/${competitionId}/winners/${winnerId}`
+    ),
+};
+
+
+/* ================================================
+   PUBLIC — Gallery
+================================================ */
+export const galleryAPI = {
+  getContent: () =>
+    api.get<{ success: boolean; data: GalleryContent }>("/api/gallery"),
+};
+
+/* ================================================
+   ADMIN — Gallery
+================================================ */
+export const adminGalleryAPI = {
+  getContent: () =>
+    api.get<{ success: boolean; data: GalleryContent }>("/api/admin/gallery"),
+
+  addItem: (
+    section: GallerySection,
+    data: Omit<GalleryItem, "_id" | "createdAt">
+  ) =>
+    api.post<{ success: boolean; data: GalleryContent }>(
+      `/api/admin/gallery/${section}`,
+      data
+    ),
+
+  updateItem: (
+    section: GallerySection,
+    id: string,
+    data: Partial<Omit<GalleryItem, "_id" | "createdAt">>
+  ) =>
+    api.put<{ success: boolean; data: GalleryContent }>(
+      `/api/admin/gallery/${section}/${id}`,
+      data
+    ),
+
+  toggleItem: (section: GallerySection, id: string, isActive: boolean) =>
+    api.patch<{ success: boolean; data: GalleryContent }>(
+      `/api/admin/gallery/${section}/${id}/toggle`,
+      { isActive }
+    ),
+
+  deleteItem: (section: GallerySection, id: string) =>
+    api.delete<{ success: boolean; data: GalleryContent }>(
+      `/api/admin/gallery/${section}/${id}`
     ),
 };
 

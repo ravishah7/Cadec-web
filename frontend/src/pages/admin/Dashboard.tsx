@@ -1,10 +1,12 @@
 // frontend/src/pages/admin/Dashboard.tsx
 
 import { useState, useEffect } from "react";
-import { Briefcase, CalendarDays, Rocket, Info } from "lucide-react";
+import { Briefcase, CalendarDays, Rocket, Info, Images } from "lucide-react";
 import DashboardCard from "@/components/admin/DashboardCard";
 import { adminDashboardAPI } from "@/services/api";
 import type { DashboardStats } from "@/types/admin.types";
+
+
 
 const Dashboard = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -50,6 +52,16 @@ const Dashboard = () => {
       total: stats?.totalStartups,
       activeCount: stats?.activeStartups,
       accentColor: "primary" as const,
+    },
+    {
+      title: "Gallery",
+      description:
+        "Manage magazines, brochures, and event posters with Canva view links for public display.",
+      href: "/admin/gallery",
+      icon: Images,
+      total: undefined,
+      activeCount: undefined,
+      accentColor: "accent" as const,
     },
     {
       title: "About",

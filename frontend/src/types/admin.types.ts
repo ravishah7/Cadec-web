@@ -243,3 +243,28 @@ export interface AboutContent {
   competitions: Competition[];
   updatedAt: string;
 }
+
+// ── APPEND TO BOTTOM OF frontend/src/types/admin.types.ts ──────────────────
+
+/* ----------------------------------------
+   Gallery Content
+-----------------------------------------*/
+export interface GalleryItem {
+  _id?: string;
+  title: string;
+  description: string;
+  canvaLink: string;
+  thumbnail: string;
+  isActive: boolean;
+  createdAt?: string;
+}
+
+export interface GalleryContent {
+  _id: string;
+  magazines: GalleryItem[];
+  brochures: GalleryItem[];
+  posters:   GalleryItem[];
+  updatedAt: string;
+}
+
+export type GallerySection = "magazines" | "brochures" | "posters";
