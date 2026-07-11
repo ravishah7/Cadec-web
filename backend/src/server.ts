@@ -22,6 +22,7 @@ import { errorHandler } from "./middleware/errorHandler";
 import startupRoutes from "./routes/startupRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import galleryRoutes from "./routes/galleryRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 const app = express();
 
@@ -107,6 +108,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/startups", startupRoutes);
 app.use("/api/about", aboutRoutes);
 app.use("/api/gallery", galleryRoutes);
+app.use("/api/upload", uploadRoutes);
 
 /* ----------------------------
    Health Check

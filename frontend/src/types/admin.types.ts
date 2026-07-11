@@ -65,31 +65,16 @@ export interface JobFilters {
   isActive: string;
 }
 
-/* ----------------------------------------
-   Event
-   — matches backend model exactly:
-     status: lowercase enum
-     price: string
-     isRegistrationOpen (not registrationOpen)
-     questions.question (not label)
------------------------------------------*/
 export type EventStatus =
-  | "upcoming"
-  | "ongoing"
-  | "completed"
-  | "cancelled";
-
-export type QuestionType =
-  | "text"
-  | "textarea"
-  | "radio"
-  | "checkbox"
-  | "select";
+  | "Upcoming"
+  | "Ongoing"
+  | "Completed"
+  | "Cancelled";
 
 export interface EventQuestion {
   id: string;
-  question: string;        // matches model field name
-  type: QuestionType;
+  question: string;
+  type: "text" | "textarea" | "radio" | "checkbox" | "select";
   placeholder?: string;
   required: boolean;
   options?: string[];
@@ -104,15 +89,29 @@ export interface Event {
   location: string;
   image?: string;
   category: string;
-  maxAttendees?: number;
-  currentAttendees: number;
-  price: string;           // string in model
+
+  price: string;
+
   status: EventStatus;
-  isRegistrationOpen: boolean;   // exact model field name
+
+  registrationOpen: boolean;
+
   registrationDeadline?: string;
+
+  maxAttendees?: String;
+
+  currentAttendees?: number;
+
   questions: EventQuestion[];
-  createdBy?: { _id: string; name: string; email: string };
+
+  createdBy?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+
   isActive: boolean;
+
   createdAt: string;
   updatedAt: string;
 }
@@ -125,29 +124,28 @@ export interface EventFormData {
   location: string;
   image: string;
   category: string;
-  price: string;           // string to match model
+
+  price: string;
+
   status: EventStatus;
+
   registrationDeadline: string;
-  isRegistrationOpen: boolean;   // exact model field name
-  maxAttendees: number | "";
+
+  registrationOpen: boolean;
+
+  maxAttendees: string;
+
   questions: EventQuestion[];
+
   isActive: boolean;
 }
-
 export interface EventFilters {
   search: string;
   status: string;
   category: string;
-  isRegistrationOpen: string;
+  registrationOpen: string;
 }
 
-/* ----------------------------------------
-   Startup
-   — matches backend model exactly:
-     founders: string[] (just names)
-     status: 'Incubated' | 'Accelerated' only
-     yearFounded: required
------------------------------------------*/
 export interface Startup {
   _id: string;
   name: string;
@@ -254,7 +252,7 @@ export interface GalleryItem {
   title: string;
   description: string;
   canvaLink: string;
-  thumbnail: string;
+  thumbnail: string;    
   isActive: boolean;
   createdAt?: string;
 }

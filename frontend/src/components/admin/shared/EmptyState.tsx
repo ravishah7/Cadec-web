@@ -19,27 +19,20 @@ const EmptyState = ({
   description,
   actionLabel,
   onAction,
-  className,
 }: EmptyStateProps) => {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center py-20 text-center",
-        className
-      )}
-    >
-      <div className="p-4 rounded-full bg-muted mb-4">
-        <Icon className="h-8 w-8 text-muted-foreground" />
-      </div>
-      <h3 className="text-base font-semibold text-foreground mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground max-w-xs mb-5">
+    <div className="flex flex-col items-center py-10">
+      <Icon className="h-10 w-10 text-muted-foreground mb-4" />
+
+      <h3 className="font-semibold">{title}</h3>
+
+      <p className="text-muted-foreground text-center">
         {description}
       </p>
-      {actionLabel && onAction && (
-        <Button size="sm" onClick={onAction}>
-          {actionLabel}
-        </Button>
-      )}
+
+      <Button onClick={onAction}>
+        {actionLabel}
+      </Button>
     </div>
   );
 };

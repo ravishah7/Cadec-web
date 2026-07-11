@@ -8,7 +8,7 @@ export interface IEvent extends Document {
   location: string;
   image?: string;
   category: string;
-  maxAttendees?: number;
+  maxAttendees?: string;
   currentAttendees: number;
   price: string;
   status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
@@ -58,18 +58,19 @@ const EventSchema = new Schema<IEvent>({
     type: String,
     required: true,
     trim: true
-  },
-  maxAttendees: {
-    type: Number
-  },
+  },maxAttendees: {
+  type: String,
+  default: "Unlimited",
+},
+price: {
+  type: String,
+  default: "Free",
+},
   currentAttendees: {
     type: Number,
     default: 0
   },
-  price: {
-    type: String,
-    required: true
-  },
+  
   status: {
     type: String,
     enum: ['upcoming', 'ongoing', 'completed', 'cancelled'],

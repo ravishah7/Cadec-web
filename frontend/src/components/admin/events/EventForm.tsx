@@ -19,10 +19,10 @@ import type { Event, EventFormData, EventStatus } from "@/types/admin.types";
 
 // lowercase — matches model enum exactly
 const EVENT_STATUSES: { value: EventStatus; label: string }[] = [
-  { value: "upcoming",  label: "Upcoming"  },
-  { value: "ongoing",   label: "Ongoing"   },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
+  { value: "Upcoming", label: "Upcoming" },
+  { value: "Ongoing", label: "Ongoing" },
+  { value: "Completed", label: "Completed" },
+  { value: "Cancelled", label: "Cancelled" },
 ];
 
 const EVENT_CATEGORIES = [
@@ -42,13 +42,13 @@ const buildDefault = (event?: Event | null): EventFormData => ({
   location:            event?.location                                     ?? "",
   image:               event?.image                                        ?? "",
   category:            event?.category                                     ?? "Other",
-  price:               event?.price                                        ?? "0",
-  status:              event?.status                                       ?? "upcoming",
+  price:               event?.price                                        ?? "Free",
+  status:              event?.status                                       ?? "Upcoming",
   registrationDeadline: event?.registrationDeadline
     ? event.registrationDeadline.slice(0, 10)
     : "",
-  isRegistrationOpen:  event?.isRegistrationOpen                          ?? true,
-  maxAttendees:        event?.maxAttendees                                 ?? "",
+  registrationOpen:  event?.registrationOpen                          ?? true,
+  maxAttendees:      event?.maxAttendees ? String(event.maxAttendees)   : "",
   questions:           event?.questions                                    ?? [],
   isActive:            event?.isActive                                     ?? true,
 });
@@ -186,27 +186,25 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
           </Label>
           <Input
             id="ef-price"
+            type="text"
             value={form.price}
             onChange={(e) => set("price", e.target.value)}
-            placeholder="Free / ₹200"
+            placeholder="Free / ₹500 / Prize Pool ₹30,000"
             required
           />
         </div>
+
         <div className="space-y-1.5">
           <Label htmlFor="ef-max">Max Attendees</Label>
           <Input
             id="ef-max"
-            type="number"
-            min={1}
+            type="text"
             value={form.maxAttendees}
-            onChange={(e) =>
-              set("maxAttendees", e.target.value === "" ? "" : Number(e.target.value))
-            }
-            placeholder="Unlimited"
+            onChange={(e) =>  set("maxAttendees", e.target.value)}
+            placeholder="Unlimited / 100 Seats / Limited"
           />
         </div>
       </div>
-
       {/* Image URL */}
       <div className="space-y-1.5">
         <Label htmlFor="ef-img">Event Image URL</Label>
@@ -253,8 +251,8 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
           </div>
           <Switch
             id="ef-regopen"
-            checked={form.isRegistrationOpen}
-            onCheckedChange={(v) => set("isRegistrationOpen", v)}
+            checked={form.registrationOpen}
+            onCheckedChange={(v) => set("registrationOpen", v)}
           />
         </div>
         <div className="flex items-center justify-between rounded-lg border p-3">
