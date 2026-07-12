@@ -55,9 +55,10 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
 
       <aside
         className={cn(
-          "fixed top-0 left-0 w-64 bg-background border-r z-50",
-          "flex flex-col transition-transform duration-300 ease-in-out",
-          "lg:translate-x-0 lg:static lg:z-auto",
+          "fixed inset-y-0 left-0 w-64 bg-background border-r z-50",
+          "flex flex-col h-screen overflow-y-auto",
+          "transition-transform duration-300 ease-in-out",
+          "lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-30",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

@@ -272,17 +272,17 @@ export const adminCreateEvent = async (
       date:                 req.body.date,
       time:                 req.body.time,
       location:             req.body.location,
-      image:                req.body.image,
+      image:                req.body.image             || undefined,
       category:             req.body.category,
-      price:                req.body.price        ?? 0,
-      // Schema enum is lowercase: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
-      status:               req.body.status       ?? "upcoming",
-      registrationDeadline: req.body.registrationDeadline,
-      // Schema field is `isRegistrationOpen`, not `registrationOpen`
-      isRegistrationOpen:   req.body.isRegistrationOpen ?? true,
-      maxAttendees:         req.body.maxAttendees,
-      questions:            req.body.questions    ?? [],
-      isActive:             req.body.isActive     ?? true,
+      price:                req.body.price,
+      status:               req.body.status            ?? "upcoming",
+      registrationDeadline: req.body.registrationDeadline || undefined,
+      isRegistrationOpen:   req.body.isRegistrationOpen   ?? true,
+      maxAttendees:         req.body.maxAttendees      || "Limited",
+      registrationFormType: req.body.registrationFormType ?? "internal",  // ← NEW
+      externalFormLink:     req.body.externalFormLink  || "",             // ← NEW
+      questions:            req.body.questions         ?? [],
+      isActive:             req.body.isActive          ?? true,
       createdBy:            req.user._id,
     });
 
@@ -313,10 +313,13 @@ export const adminUpdateEvent = async (
       "title", "description", "date", "time", "location", "image",
       "category", "price", "status", "registrationDeadline",
       "isRegistrationOpen", "maxAttendees", "questions", "isActive",
+      "registrationFormType", "externalFormLink",                        // ← NEW
     ] as const;
 
     for (const f of fields) {
-      if (req.body[f] !== undefined) (event as never as Record<string, unknown>)[f] = req.body[f];
+      if (req.body[f] !== undefined) {
+        (event as never as Record<string, unknown>)[f] = req.body[f];
+      }
     }
 
     await event.save();

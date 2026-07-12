@@ -24,14 +24,13 @@ const Footer = () => {
     { name: "Events", href: "/events" },
     { name: "Gallery", href: "/gallery" },
     { name: "Contact", href: "/contact" },
-    { name: "Privacy Policy", href: "/privacy" },
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#" },
-    { name: "Twitter", icon: Twitter, href: "#" },
-    { name: "Instagram", icon: Instagram, href: "#" },
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/cadec.pgdav", color: "text-blue-600" },
+    { name: "Twitter", icon: Twitter, href: "https://twitter.com/cadec_pgdav", color: "text-blue-400" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/cadec.pgdav", color: "text-pink-600" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/cadec-pgdav/", color: "text-blue-700" },
   ];
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -115,20 +114,20 @@ const Footer = () => {
               </div>
               <div className="flex items-center text-muted-foreground">
                 <Phone className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span>+91 11 2XXX XXXX</span>
+                <span>Not Available Yet</span>
               </div>
               <div className="flex items-center text-muted-foreground">
                 <Mail className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span>info@ignitepgdav.edu</span>
+                <span>cadec@pgdav.du.ac.in</span>
               </div>
             </div>
           </div>
 
-          {/* Newsletter */}
+          {/* Sponsor */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Want to sponsor us?</h3>
             <p className="text-muted-foreground mb-4">
-              send us your contact we will contact you as soon as possible
+              Share your email and our team will reach out to discuss sponsorship opportunities.
             </p>
             <form onSubmit={handleSubscribe} className="flex space-x-2">
               <Input
@@ -150,7 +149,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © 2024 CADEC PGDAV. All rights reserved.
+            © 2023 CADEC PGDAV.
           </p>
           <p className="text-muted-foreground text-sm">
             Made with ❤️ by RAVI & ANKIT KUMAR SINGH 

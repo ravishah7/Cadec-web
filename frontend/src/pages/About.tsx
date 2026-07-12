@@ -60,19 +60,7 @@ const About = () => {
         { _id: "4", icon: "Trophy",        title: "BizBlitz Event 1.0 B-Plan Competition",                  description: "B-Plan Competition for our college students as a culmination of our efforts to empower aspiring entrepreneurs, providing a platform to demonstrate their innovative ideas." },
       ];
 
-  const competitions = content?.competitions.length
-    ? content.competitions
-    : [
-        {
-          _id: "1", title: "BizBlitz 1.0 Winners",
-          subtitle: "Celebrating the innovative minds who won our B-Plan Competition.",
-          winners: [
-            { _id: "1", startup: "LittleMove", name: "Varsha Yadav, Harsh Singh", position: "1st Prize", amount: "₹5,000" },
-            { _id: "2", startup: "Gama",        name: "Shubham Jain",             position: "2nd Prize", amount: "₹3,000" },
-            { _id: "3", startup: "Ecstasy",     name: "Yash Kumar Singh",         position: "3rd Prize", amount: "₹2,000" },
-          ],
-        },
-      ];
+  const competitions = content?.competitions?.length ? content.competitions : [];
 
   return (
     <div className="min-h-screen pb-20 lg:pb-0">
@@ -181,7 +169,7 @@ const About = () => {
               Our dynamic student leadership team driving innovation and entrepreneurship.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {studentCoordinators.map((member) => (
               <Card key={member._id} className="text-center p-4">
                 <CardHeader className="pb-2">
@@ -228,40 +216,70 @@ const About = () => {
       </section>
 
       {/* Competitions + Winners */}
-      {competitions.map((comp) => (
-        <section key={comp._id} className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{comp.title}</h2>
-              {comp.subtitle && (
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  {comp.subtitle}
-                </p>
-              )}
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {comp.winners.map((winner) => (
-                  <Card key={winner._id} className="text-center p-6">
-                    <CardHeader>
-                      <div className="bg-accent/10 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                        <Trophy className="h-8 w-8 text-accent" />
-                      </div>
-                      <CardTitle className="text-lg">{winner.startup}</CardTitle>
-                      <Badge variant="secondary" className="text-sm">{winner.position}</Badge>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="font-semibold text-primary mb-2">{winner.amount}</p>
-                      <p className="text-sm text-muted-foreground">{winner.name}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+<section className="py-16 bg-muted/30">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    {competitions.length === 0 ? (
+      <div className="text-center py-12">
+        <h2 className="text-3xl font-bold mb-3">
+          Competitions & Winners
+        </h2>
+        <p className="text-muted-foreground">
+          No competitions have been added yet.
+        </p>
+      </div>
+    ) : (
+      competitions.map((comp) => (
+        <div key={comp._id} className="mb-16 last:mb-0">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {comp.title}
+            </h2>
+
+            {comp.subtitle && (
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {comp.subtitle}
+              </p>
+            )}
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {comp.winners.map((winner) => (
+                <Card key={winner._id} className="text-center p-6">
+                  <CardHeader>
+                    <div className="bg-accent/10 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                      <Trophy className="h-8 w-8 text-accent" />
+                    </div>
+
+                    <CardTitle>{winner.startup}</CardTitle>
+
+                    <Badge variant="secondary">
+                      {winner.position}
+                    </Badge>
+                  </CardHeader>
+
+                  <CardContent>
+                   <p className="font-semibold text-primary">
+                    {new Intl.NumberFormat("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }).format(Number(winner.amount))}
+                  </p>
+
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {winner.name}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
-        </section>
-      ))}
-
+        </div>
+      ))
+    )}
+  </div>
+</section>
       {/* Call to Action */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

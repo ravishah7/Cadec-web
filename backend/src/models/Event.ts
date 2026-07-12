@@ -1,3 +1,5 @@
+// backend/src/models/Event.ts
+
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEvent extends Document {
@@ -8,12 +10,14 @@ export interface IEvent extends Document {
   location: string;
   image?: string;
   category: string;
-  maxAttendees?: string;
+  maxAttendees?: number;
   currentAttendees: number;
   price: string;
   status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
   isRegistrationOpen: boolean;
   registrationDeadline?: Date;
+  registrationFormType: 'internal' | 'external';   // ← NEW
+  externalFormLink?: string;                         // ← NEW
   questions: {
     id: string;
     question: string;
@@ -58,22 +62,26 @@ const EventSchema = new Schema<IEvent>({
     type: String,
     required: true,
     trim: true
-  },maxAttendees: {
-  type: String,
-  default: "Unlimited",
-},
-price: {
-  type: String,
-  default: "Free",
-},
+  },
+  maxAttendees: {
+    type: String
+  },
   currentAttendees: {
     type: Number,
     default: 0
   },
-  
+  price: {
+    type: String,
+    required: true
+  },
   status: {
     type: String,
-    enum: ['upcoming', 'ongoing', 'completed', 'cancelled'],
+    enum: [
+  "Upcoming",
+  "Ongoing",
+  "Completed",
+  "Cancelled",
+],
     default: 'upcoming'
   },
   isRegistrationOpen: {
@@ -82,6 +90,15 @@ price: {
   },
   registrationDeadline: {
     type: Date
+  },
+  registrationFormType: {
+    type: String,
+    enum: ['internal', 'external'],
+    default: 'internal'                              // ← NEW
+  },
+  externalFormLink: {
+    type: String,
+    default: ''                                      // ← NEW
   },
   questions: [{
     id: {
@@ -122,6 +139,3 @@ price: {
 });
 
 export default mongoose.model<IEvent>('Event', EventSchema);
-
-
-

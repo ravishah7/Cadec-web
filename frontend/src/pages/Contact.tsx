@@ -47,17 +47,14 @@ const Contact = () => {
       icon: Phone,
       title: "Phone",
       details: [
-        "+91 11 2XXX XXXX",
-        "+91 98XXX XXXXX (Student Coordinator)"
+        "Currently, we do not have a dedicated phone line for contact. Please reach out to us via email or our social media channels for any inquiries."
       ]
     },
     {
       icon: Mail,
       title: "Email",
       details: [
-        "info@cadecpgdav.edu",
-        "events@cadecpgdav.edu",
-        "president@cadecpgdav.edu"
+        "cadec@pgdav.du.ac.in"
       ]
     },
     {
@@ -72,38 +69,13 @@ const Contact = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#", color: "text-blue-600" },
-    { name: "Twitter", icon: Twitter, href: "#", color: "text-blue-400" },
-    { name: "Instagram", icon: Instagram, href: "#", color: "text-pink-600" },
-    { name: "LinkedIn", icon: Linkedin, href: "#", color: "text-blue-700" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/cadec.pgdav", color: "text-blue-600" },
+    { name: "Twitter", icon: Twitter, href: "https://twitter.com/cadec_pgdav", color: "text-blue-400" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/cadec.pgdav", color: "text-pink-600" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/cadec-pgdav/", color: "text-blue-700" },
   ];
 
-  const team = [
-    {
-      name: "Ankit Anand",
-      role: "President",
-      email: "president@cadecpgdav.edu",
-      phone: "+91 98XXX XXXX1"
-    },
-    {
-      name: "Nikhil Bhargav",
-      role: "Vice President",
-      email: "vicepresident@cadecpgdav.edu",
-      phone: "+91 98XXX XXXX2"
-    },
-    {
-      name: "Naman Baisla",
-      role: "Secretary",
-      email: "secretary@cadecpgdav.edu",
-      phone: "+91 98XXX XXXX3"
-    },
-    {
-      name: "Somil Verma",
-      role: "Treasurer",
-      email: "treasurer@cadecpgdav.edu",
-      phone: "+91 98XXX XXXX4"
-    }
-  ];
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -313,37 +285,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Team Contact */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Direct Contact</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Need to reach a specific team member? Here are their direct contact details.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <Card key={index} className="p-6 text-center">
-                <h3 className="font-semibold text-lg mb-2">{member.name}</h3>
-                <p className="text-primary font-medium mb-4">{member.role}</p>
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  <div className="flex items-center justify-center space-x-2">
-                    <Mail className="h-4 w-4" />
-                    <span>{member.email}</span>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2">
-                    <Phone className="h-4 w-4" />
-                    <span>{member.phone}</span>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Map Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -353,18 +294,29 @@ const Contact = () => {
               Visit us at PGDAV College, University of Delhi
             </p>
           </div>
-          
+
           <Card className="overflow-hidden">
-            <div className="bg-muted/50 h-96 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-16 w-16 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Interactive Map</h3>
-                <p className="text-muted-foreground">
-                  Map integration would be implemented here
-                </p>
-              </div>
+            <div className="h-96 w-full">
+              <iframe
+                title="PGDAV College Location"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=77.2465%2C28.5618%2C77.2565%2C28.5718&layer=mapnik&marker=28.5668%2C77.2515"
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </Card>
+
+          <div className="text-center mt-4">
+            <a
+              href="https://maps.app.goo.gl/pYQH9RmAVn7bQaqQ6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-primary hover:underline"
+            >
+              View larger map / Get directions →
+            </a>
+          </div>
         </div>
       </section>
 

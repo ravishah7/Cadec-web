@@ -42,7 +42,9 @@ const AboutPreview = () => {
               student can thrive, learn, and contribute to making a positive
               impact in their academic journey and beyond.
             </p>
-            <Button className="group">
+            <Button className="group"
+              onClick={() => window.location.href = "/about"}
+            >
               Learn More About Us
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>

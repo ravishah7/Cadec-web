@@ -145,7 +145,7 @@ const Events = () => {
         >
           {event.category}
         </Badge>
-        {!isPast && (
+        { (
           <Badge
             className="absolute top-4 right-4"
             variant={event.isRegistrationOpen ? "default" : "secondary"}

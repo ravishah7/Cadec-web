@@ -24,6 +24,7 @@ interface StartupItem {
   funding?: string;
 }
 
+
 const Startups = () => {
   const navigate = useNavigate();
 
@@ -122,6 +123,42 @@ const Startups = () => {
       </CardContent>
     </Card>
   );
+    const totalFunding = startups.reduce((total, startup) => {
+      if (!startup.funding) return total;
+
+      const funding = startup.funding.trim().toUpperCase();
+      let amount = 0;
+
+      if (funding.endsWith("CR")) {
+        amount = parseFloat(funding.replace("CR", "")) * 10000000;
+      } else if (funding.endsWith("L")) {
+        amount = parseFloat(funding.replace("L", "")) * 100000;
+      } else if (funding.endsWith("K")) {
+        amount = parseFloat(funding.replace("K", "")) * 1000;
+      } else {
+        amount = parseFloat(funding.replace(/[^\d.]/g, ""));
+      }
+
+      return total + (isNaN(amount) ? 0 : amount);
+    }, 0);
+
+const formatFunding = (amount: number) => {
+  if (amount >= 10000000) {
+    return `₹${(amount / 10000000).toFixed(1).replace(/\.0$/, "")} Cr`;
+  }
+
+  if (amount >= 100000) {
+    return `₹${(amount / 100000).toFixed(1).replace(/\.0$/, "")} L`;
+  }
+
+  if (amount >= 1000) {
+    return `₹${(amount / 1000).toFixed(1).replace(/\.0$/, "")} K`;
+  }
+
+  return `₹${amount}`;
+};
+
+const formattedFunding = formatFunding(totalFunding);
 
   const incubatedStartups = startups.filter((s) => s.status === "Incubated");
   const acceleratedStartups = startups.filter((s) => s.status === "Accelerated");
@@ -233,7 +270,9 @@ const Startups = () => {
               <p className="text-muted-foreground">Active Startups</p>
             </div>
             <div>
-              <h3 className="text-3xl font-bold text-primary mb-2">₹5.2Cr</h3>
+              <h3 className="text-3xl font-bold text-primary mb-2">
+                {formattedFunding}
+              </h3>
               <p className="text-muted-foreground">Total Funding Raised</p>
             </div>
             <div>

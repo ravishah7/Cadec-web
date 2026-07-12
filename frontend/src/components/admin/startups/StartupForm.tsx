@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Startup, StartupFormData } from "@/types/admin.types";
+import ImageUpload from "../shared/ImageUpload";
 
 // matches model enum exactly
 const STATUSES = ["Incubated", "Accelerated"];
@@ -181,41 +182,25 @@ const StartupForm = ({ startup, onSubmit, onCancel, isSubmitting }: StartupFormP
         </div>
       </div>
 
-      {/* Funding + Logo */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <Label htmlFor="sf-funding">Funding</Label>
-          <Input
-            id="sf-funding"
-            value={form.funding}
-            onChange={(e) => set("funding", e.target.value)}
-            placeholder="₹10L Seed / Bootstrapped"
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="sf-logo">Logo URL</Label>
-          <div className="flex gap-2 items-center">
-            <Input
-              id="sf-logo"
-              value={form.logo}
-              onChange={(e) => set("logo", e.target.value)}
-              placeholder="https://..."
-              className="flex-1"
-            />
-            {form.logo && (
-              <img
-                src={form.logo}
-                alt="Logo"
-                className="h-9 w-9 rounded object-contain border bg-muted shrink-0"
-                onError={(e) =>
-                  ((e.target as HTMLImageElement).style.display = "none")
-                }
-              />
-            )}
-          </div>
-        </div>
+      {/* Funding */}
+      <div className="space-y-1.5">
+        <Label htmlFor="sf-funding">Funding Raised</Label>
+        <Input
+          id="sf-funding"
+          value={form.funding}
+          onChange={(e) => set("funding", e.target.value)}
+          placeholder="₹10L Seed / Bootstrapped"
+        />
       </div>
 
+      {/* Logo */}
+      <ImageUpload
+        value={form.logo}
+        onChange={(url) => set("logo", url)}
+        folder="cadec/startups"
+        label="Startup Logo"
+        aspectHint="Square logo recommended · JPG, PNG, WEBP · Max 5MB"
+      />
       {/* Founders — simple string chips */}
       <div className="space-y-1.5">
         <Label htmlFor="sf-founder">Founders</Label>

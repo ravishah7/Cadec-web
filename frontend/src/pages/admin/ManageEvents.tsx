@@ -214,7 +214,7 @@ const ManageEvents = () => {
 
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <StatusBadge
-                    status={event.registrationOpen ? "Open" : "Closed"}
+                    status={event.isRegistrationOpen ? "Open" : "Closed"}
                     variant="active"
                   />
                   {event.questions.length > 0 && (

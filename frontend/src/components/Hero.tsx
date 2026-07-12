@@ -29,7 +29,6 @@ const Hero = () => {
       )
     : 3;
 
-  // Total prize money — parse amounts like "₹5,000" → 5000 and sum
   const totalPrizeMoney = content
     ? content.competitions.reduce((sum, comp) => {
         return (

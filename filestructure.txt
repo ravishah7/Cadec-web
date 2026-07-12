@@ -7,6 +7,7 @@
     |-- README.md
     |-- src
         |-- config
+            |-- cloudinary.ts
             |-- database.ts
             |-- passport.ts
         |-- controllers
@@ -18,6 +19,7 @@
             |-- galleryController.ts
             |-- jobController.ts
             |-- startupController.ts
+            |-- uploadController.ts
         |-- middleware
             |-- auth.ts
             |-- errorHandler.ts
@@ -39,6 +41,7 @@
             |-- galleryRoutes.ts
             |-- jobRoutes.ts
             |-- startupRoutes.ts
+            |-- uploadRoutes.ts
         |-- server.ts
         |-- services
             |-- emailService.ts
@@ -84,6 +87,7 @@
                 |-- ProtectedAdminRoute.tsx
                 |-- shared
                     |-- EmptyState.tsx
+                    |-- ImageUpload.tsx
                     |-- PaginationControls.tsx
                     |-- SearchInput.tsx
                     |-- StatusBadge.tsx
@@ -160,6 +164,7 @@
             |-- useAdminEvents.ts
             |-- useAdminJobs.ts
             |-- useAdminStartups.ts
+            |-- useCloudinaryUpload.ts
         |-- index.css
         |-- lib
             |-- utils.ts

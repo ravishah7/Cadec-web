@@ -1,12 +1,13 @@
 // frontend/src/components/admin/events/EventForm.tsx
 
 import { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -14,43 +15,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import ImageUpload from "@/components/admin/shared/ImageUpload";
 import QuestionBuilder from "./QuestionBuilder";
 import type { Event, EventFormData, EventStatus } from "@/types/admin.types";
 
-// lowercase — matches model enum exactly
+/* ── Constants ── */
 const EVENT_STATUSES: { value: EventStatus; label: string }[] = [
-  { value: "Upcoming", label: "Upcoming" },
-  { value: "Ongoing", label: "Ongoing" },
+  { value: "Upcoming",  label: "Upcoming"  },
+  { value: "Ongoing",   label: "Ongoing"   },
   { value: "Completed", label: "Completed" },
   { value: "Cancelled", label: "Cancelled" },
 ];
 
 const EVENT_CATEGORIES = [
-  "Workshop",
-  "Seminar",
-  "Competition",
-  "Networking",
-  "Cultural",
-  "Other",
+  "Workshop", "Seminar", "Competition",
+  "Networking", "Cultural", "Other",
 ];
 
+/* ── Default builder ── */
 const buildDefault = (event?: Event | null): EventFormData => ({
-  title:               event?.title                                        ?? "",
-  description:         event?.description                                  ?? "",
-  date:                event?.date   ? event.date.slice(0, 10)            : "",
-  time:                event?.time                                         ?? "",
-  location:            event?.location                                     ?? "",
-  image:               event?.image                                        ?? "",
-  category:            event?.category                                     ?? "Other",
+  title:                event?.title                                     ?? "",
+  description:          event?.description                               ?? "",
+  date:                 event?.date  ? event.date.slice(0, 10)          : "",
+  time:                 event?.time                                      ?? "",
+  location:             event?.location                                  ?? "",
+  image:                event?.image                                     ?? "",
+  category:             event?.category                                  ?? "Other",
   price:               event?.price                                        ?? "Free",
-  status:              event?.status                                       ?? "Upcoming",
+  status:               event?.status                                    ?? "Upcoming",
   registrationDeadline: event?.registrationDeadline
     ? event.registrationDeadline.slice(0, 10)
     : "",
-  registrationOpen:  event?.registrationOpen                          ?? true,
-  maxAttendees:      event?.maxAttendees ? String(event.maxAttendees)   : "",
-  questions:           event?.questions                                    ?? [],
-  isActive:            event?.isActive                                     ?? true,
+  isRegistrationOpen:   event?.isRegistrationOpen                       ?? true,
+  maxAttendees:         event?.maxAttendees ? String(event.maxAttendees) : "",
+  registrationFormType: event?.registrationFormType                     ?? "internal",
+  externalFormLink:     event?.externalFormLink                         ?? "",
+  questions:            event?.questions                                 ?? [],
+  isActive:             event?.isActive                                  ?? true,
 });
 
 interface EventFormProps {
@@ -70,13 +71,19 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate external form link if external mode selected
+    if (form.registrationFormType === "external" && !form.externalFormLink.trim()) {
+      return;
+    }
+
     await onSubmit(form);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
-      {/* Title */}
+      {/* ── Title ── */}
       <div className="space-y-1.5">
         <Label htmlFor="ef-title">
           Title <span className="text-destructive">*</span>
@@ -90,7 +97,7 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         />
       </div>
 
-      {/* Description */}
+      {/* ── Description ── */}
       <div className="space-y-1.5">
         <Label htmlFor="ef-desc">
           Description <span className="text-destructive">*</span>
@@ -105,7 +112,7 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         />
       </div>
 
-      {/* Date + Time */}
+      {/* ── Date + Time ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label htmlFor="ef-date">
@@ -133,7 +140,7 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         </div>
       </div>
 
-      {/* Location */}
+      {/* ── Location ── */}
       <div className="space-y-1.5">
         <Label htmlFor="ef-loc">
           Location <span className="text-destructive">*</span>
@@ -147,7 +154,7 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         />
       </div>
 
-      {/* Category + Status */}
+      {/* ── Category + Status ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label htmlFor="ef-cat">
@@ -205,31 +212,17 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
           />
         </div>
       </div>
-      {/* Image URL */}
-      <div className="space-y-1.5">
-        <Label htmlFor="ef-img">Event Image URL</Label>
-        <div className="flex gap-3 items-center">
-          <Input
-            id="ef-img"
-            value={form.image}
-            onChange={(e) => set("image", e.target.value)}
-            placeholder="https://..."
-            className="flex-1"
-          />
-          {form.image && (
-            <img
-              src={form.image}
-              alt="Preview"
-              className="h-9 w-16 rounded object-cover border bg-muted shrink-0"
-              onError={(e) =>
-                ((e.target as HTMLImageElement).style.display = "none")
-              }
-            />
-          )}
-        </div>
-      </div>
 
-      {/* Registration Deadline */}
+      {/* ── Event Image (Cloudinary) ── */}
+      <ImageUpload
+        value={form.image}
+        onChange={(url) => set("image", url)}
+        folder="cadec/events"
+        label="Event Image"
+        aspectHint="Recommended: 16:9 ratio · JPG, PNG, WEBP · Max 5MB"
+      />
+
+      {/* ── Registration Deadline ── */}
       <div className="space-y-1.5">
         <Label htmlFor="ef-deadline">Registration Deadline</Label>
         <Input
@@ -240,7 +233,7 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         />
       </div>
 
-      {/* Toggles */}
+      {/* ── Toggles ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex items-center justify-between rounded-lg border p-3">
           <div>
@@ -251,8 +244,8 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
           </div>
           <Switch
             id="ef-regopen"
-            checked={form.registrationOpen}
-            onCheckedChange={(v) => set("registrationOpen", v)}
+            checked={form.isRegistrationOpen}
+            onCheckedChange={(v) => set("isRegistrationOpen", v)}
           />
         </div>
         <div className="flex items-center justify-between rounded-lg border p-3">
@@ -268,19 +261,93 @@ const EventForm = ({ event, onSubmit, onCancel, isSubmitting }: EventFormProps) 
         </div>
       </div>
 
-      {/* Question Builder */}
-      <QuestionBuilder
-        questions={form.questions}
-        onChange={(q) => set("questions", q)}
-      />
+      {/* ══ REGISTRATION FORM TYPE ══ */}
+      <div className="space-y-3 rounded-lg border p-4">
+        <div>
+          <Label className="text-sm font-medium">Registration Form</Label>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Choose how attendees register for this event
+          </p>
+        </div>
 
-      {/* Actions */}
+        <Tabs
+          value={form.registrationFormType}
+          onValueChange={(v) =>
+            set("registrationFormType", v as "internal" | "external")
+          }
+        >
+          <TabsList className="w-full grid grid-cols-2">
+            <TabsTrigger value="internal" className="text-xs">
+              Internal Form
+            </TabsTrigger>
+            <TabsTrigger value="external" className="text-xs">
+              External Link
+            </TabsTrigger>
+          </TabsList>
+
+          {/* ── Internal: question builder ── */}
+          <TabsContent value="internal" className="mt-4">
+            <QuestionBuilder
+              questions={form.questions}
+              onChange={(q) => set("questions", q)}
+            />
+          </TabsContent>
+
+          {/* ── External: Google Form / Typeform link ── */}
+          <TabsContent value="external" className="mt-4 space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="ef-extlink">
+                External Form Link{" "}
+                {form.registrationFormType === "external" && (
+                  <span className="text-destructive">*</span>
+                )}
+              </Label>
+              <Input
+                id="ef-extlink"
+                value={form.externalFormLink}
+                onChange={(e) => set("externalFormLink", e.target.value)}
+                placeholder="https://forms.google.com/... or https://typeform.com/..."
+                required={form.registrationFormType === "external"}
+              />
+              {form.externalFormLink && (
+                <a
+                  href={form.externalFormLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                  Preview form link
+                </a>
+              )}
+            </div>
+
+            <div className="rounded-lg bg-muted/50 border border-dashed p-3">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <span className="font-medium text-foreground">Note:</span>{" "}
+                When external form is selected, the custom question builder is
+                ignored and attendees will be redirected to your external form
+                link when they click Register.
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* ── Actions ── */}
       <div className="flex justify-end gap-2 pt-1">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={isSubmitting}
+        >
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+          {isSubmitting && (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          )}
           {event ? "Update Event" : "Create Event"}
         </Button>
       </div>

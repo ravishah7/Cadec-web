@@ -11,6 +11,7 @@ import { Calendar, MapPin, Clock, Users, ExternalLink, UserCheck, Loader2 } from
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import StatusBadge from "@/components/admin/shared/StatusBadge";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -145,7 +146,7 @@ const Events = () => {
         >
           {event.category}
         </Badge>
-        {!isPast && (
+        {(
           <Badge
             className="absolute top-4 right-4"
             variant={event.isRegistrationOpen ? "default" : "secondary"}

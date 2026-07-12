@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Job, JobFormData, JobType } from "@/types/admin.types";
+import ImageUpload from "@/components/admin/shared/ImageUpload";
 
 const JOB_TYPES: JobType[] = ["Full-time", "Part-time", "Internship"];
 const EXPERIENCE_LEVELS = ["Fresher", "0-2 Years", "2-5 Years", "5+ Years"];
@@ -222,29 +223,14 @@ const JobForm = ({ job, onSubmit, onCancel, isSubmitting }: JobFormProps) => {
     )}
   </div>
 </div>
-      {/* Company Logo */}
-      <div className="space-y-1.5">
-        <Label htmlFor="jf-logo">Company Logo URL</Label>
-        <div className="flex gap-3 items-center">
-          <Input
-            id="jf-logo"
-            value={form.companyLogo}
-            onChange={(e) => set("companyLogo", e.target.value)}
-            placeholder="https://..."
-            className="flex-1"
-          />
-          {form.companyLogo && isValidUrl(form.companyLogo) && (
-            <img
-              src={form.companyLogo}
-              alt="Logo preview"
-              className="h-9 w-9 rounded object-contain border bg-muted shrink-0"
-              onError={(e) =>
-                ((e.target as HTMLImageElement).style.display = "none")
-              }
-            />
-          )}
-        </div>
-      </div>
+      
+<ImageUpload
+  value={form.companyLogo}
+  onChange={(url) => set("companyLogo", url)}
+  folder="cadec/jobs"
+  label="Company Logo"
+  aspectHint="Square logo recommended · JPG, PNG, WEBP · Max 5MB"
+/>
 
       {/* Requirements chips */}
       <div className="space-y-1.5">

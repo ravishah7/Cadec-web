@@ -89,29 +89,43 @@ export interface Event {
   location: string;
   image?: string;
   category: string;
-
+  maxAttendees?: string;
+  currentAttendees: number;
   price: string;
-
   status: EventStatus;
-
-  registrationOpen: boolean;
-
+  isRegistrationOpen: boolean;
   registrationDeadline?: string;
-
-  maxAttendees?: String;
-
-  currentAttendees?: number;
-
+  registrationFormType: 'internal' | 'external';   // ← NEW
+  externalFormLink?: string;                         // ← NEW
   questions: EventQuestion[];
-
-  createdBy?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-
+  createdBy?: { _id: string; name: string; email: string };
   isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
+// Replace the Event and EventFormData interfaces in admin.types.ts
+
+export interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  image?: string;
+  category: string;
+  maxAttendees?: string;
+  currentAttendees: number;
+  price: string;
+  status: EventStatus;
+  isRegistrationOpen: boolean;
+  registrationDeadline?: string;
+  registrationFormType: 'internal' | 'external';   // ← NEW
+  externalFormLink?: string;                         // ← NEW
+  questions: EventQuestion[];
+  createdBy?: { _id: string; name: string; email: string };
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -124,19 +138,14 @@ export interface EventFormData {
   location: string;
   image: string;
   category: string;
-
   price: string;
-
   status: EventStatus;
-
   registrationDeadline: string;
-
-  registrationOpen: boolean;
-
+  isRegistrationOpen: boolean;
   maxAttendees: string;
-
+  registrationFormType: 'internal' | 'external';   // ← NEW
+  externalFormLink: string;                          // ← NEW
   questions: EventQuestion[];
-
   isActive: boolean;
 }
 export interface EventFilters {
