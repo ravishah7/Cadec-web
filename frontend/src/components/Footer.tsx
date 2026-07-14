@@ -49,7 +49,7 @@ const Footer = () => {
     try {
       await contactAPI.submitContact({
         firstName: "Potential Sponsor",
-        lastName: "Sponor",
+        lastName: "Sponsor",
         email: email,
         subject: "Sponsor",
         message: `Sponsor`
