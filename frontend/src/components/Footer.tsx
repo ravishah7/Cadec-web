@@ -155,7 +155,7 @@ const Footer = () => {
           <p className="text-muted-foreground text-sm">
             Made with ❤️ by <a href="https://www.instagram.com/ravi_sh_ah/" target="_blank" className="text-primary hover:underline">
               RAVI
-            </a> & <a href="https://www.instagram.com/ankitkumarsingh/" target="_blank" className="text-primary hover:underline">
+            </a> & <a href="https://x.com/AnKit0017_" target="_blank" className="text-primary hover:underline">
               ANKIT KUMAR SINGH
             </a>
           </p>
