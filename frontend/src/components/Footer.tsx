@@ -9,7 +9,8 @@ import {
   Mail, 
   Phone, 
   MapPin,
-  Send
+  Send,
+  Link
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -152,7 +153,11 @@ const Footer = () => {
             © 2023 CADEC PGDAV.
           </p>
           <p className="text-muted-foreground text-sm">
-            Made with ❤️ by RAVI & ANKIT KUMAR SINGH 
+            Made with ❤️ by <a href="https://www.instagram.com/ravi_sh_ah/" target="_blank" className="text-primary hover:underline">
+              RAVI
+            </a> & <a href="https://www.instagram.com/ankitkumarsingh/" target="_blank" className="text-primary hover:underline">
+              ANKIT KUMAR SINGH
+            </a>
           </p>
         </div>
       </div>

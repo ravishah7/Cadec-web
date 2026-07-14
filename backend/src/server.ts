@@ -23,6 +23,7 @@ import startupRoutes from "./routes/startupRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import galleryRoutes from "./routes/galleryRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
+import { verifyEmailConnection } from "./services/emailService";
 
 const app = express();
 
@@ -148,4 +149,7 @@ app.listen(PORT, () => {
       "development"
     }`
   );
-});
+}
+);
+//Vaerify email connection
+verifyEmailConnection();

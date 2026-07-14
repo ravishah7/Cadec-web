@@ -186,6 +186,7 @@
             |-- Jobs.tsx
             |-- NotFound.tsx
             |-- Startups.tsx
+            |-- VerifyEmail.tsx
         |-- services
             |-- api.ts
         |-- types

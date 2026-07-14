@@ -31,6 +31,7 @@ import ManageEvents from "./pages/admin/ManageEvents";
 import ManageStartups from "./pages/admin/ManageStartups";
 import ManageAbout from "./pages/admin/ManageAbout";
 import ManageGallery from "./pages/admin/ManageGallery";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/auth/verify-email" element={<VerifyEmail />} />
               
 
               {/* Redirect admin pages to home */}
