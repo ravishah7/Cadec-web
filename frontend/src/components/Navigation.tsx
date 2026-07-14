@@ -33,17 +33,19 @@ const Navigation = () => {
     <nav className="fixed top-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <img
-              src={logo}
-              alt="CADEC PGDAV"
-              className="h-12 w-12 mr-3"
-            />
-            <span className="text-xl font-bold">
-              <span className="text-accent">CADEC</span>{" "}
-              <span className="text-primary">PGDAV</span>
-            </span>
-          </div>
+          <Link to="/" >
+            <div className="flex items-center">
+                <img
+                  src={logo}
+                  alt="CADEC PGDAV"
+                  className="h-12 w-12 mr-3"
+                />
+              <span className="text-xl font-bold">
+                <span className="text-accent">CADEC</span>{" "}
+                <span className="text-primary">PGDAV</span>
+              </span>
+            </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
