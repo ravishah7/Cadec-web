@@ -4,8 +4,6 @@
      "module": "Node16",
     "moduleResolution": "node16",
 
-    "types": ["node"],
-
     "lib": ["ES2020"],
 
     "outDir": "./dist",
