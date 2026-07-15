@@ -133,23 +133,8 @@ app.use(errorHandler);
    Start Server
 ----------------------------- */
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT}`);
-
-  console.log(
-    `🌐 Frontend: ${
-      process.env.FRONTEND_URL ||
-      "http://localhost:5173"
-    }`
-  );
-
-  console.log(
-    `Environment: ${
-      process.env.NODE_ENV ||
-      "development"
-    }`
-  );
-}
-);
+});
 //Vaerify email connection
 verifyEmailConnection();
