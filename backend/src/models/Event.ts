@@ -10,7 +10,7 @@ export interface IEvent extends Document {
   location: string;
   image?: string;
   category: string;
-  maxAttendees?: number;
+  maxAttendees?: string;
   currentAttendees: number;
   price: string;
   status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
