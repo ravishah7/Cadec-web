@@ -7,12 +7,12 @@ import nodemailer from "nodemailer";
 -----------------------------------------*/
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.hostinger.com",
-  port: 465,
-  secure: true, // Required for port 465
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: process.env.EMAIL_SECURE === "true", // false enables STARTTLS upgrade
   auth: {
-    user: process.env.EMAIL_USER!,
-    pass: process.env.EMAIL_PASS!,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
   connectionTimeout: 30000,
   greetingTimeout: 30000,
