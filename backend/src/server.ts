@@ -42,12 +42,11 @@ connectDB();
 
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL ||
-  "http://localhost:8080",
-  "https://cadec.org.in",        // production domain
-  "https://www.cadec.org.in",    // production domain with www
-];
-
+  process.env.FRONTEND_URL,      // production frontend, set in Render env vars
+  "http://localhost:8080",       // local dev
+  "https://cadec.org.in",
+  "https://www.cadec.org.in",
+].filter(Boolean); // removes undefined if FRONTEND_URL isn't set
 app.use(
   cors({
     origin(origin, callback) {
