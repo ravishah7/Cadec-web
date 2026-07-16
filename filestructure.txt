@@ -49,6 +49,7 @@
             |-- jwt.ts
     |-- tsconfig.json
 |-- frontend
+    |-- .env
     |-- .gitignore
     |-- bun.lockb
     |-- components.json
