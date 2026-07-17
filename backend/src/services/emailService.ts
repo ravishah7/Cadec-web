@@ -1,31 +1,16 @@
 // backend/src/services/emailService.ts
 
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 /* ----------------------------------------
-  Transporter
+   Resend Client
 -----------------------------------------*/
-
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: process.env.EMAIL_SECURE === "true", // false enables STARTTLS upgrade
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
-  tls: {
-    minVersion: "TLSv1.2",
-    rejectUnauthorized: true,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = process.env.EMAIL_USER
   ? `CADEC PGDAV <${process.env.EMAIL_USER}>`
-  : "CADEC PGDAV <noreply@cadec.in>";
+  : "CADEC PGDAV <noreply@cadec.org.in>";
+
 const FRONTEND = process.env.FRONTEND_URL || "http://localhost:8080";
 
 /* ----------------------------------------
@@ -33,14 +18,14 @@ const FRONTEND = process.env.FRONTEND_URL || "http://localhost:8080";
 -----------------------------------------*/
 export const sendVerificationEmail = async (
   email: string,
-  name:  string,
+  name: string,
   token: string
 ): Promise<void> => {
   const verifyUrl = `${FRONTEND}/auth/verify-email?token=${token}`;
 
-  await transporter.sendMail({
-    from:    FROM,
-    to:      email,
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: email,
     subject: "Verify your CADEC email address",
     html: `
       <!DOCTYPE html>
@@ -55,8 +40,7 @@ export const sendVerificationEmail = async (
               <td align="center">
                 <table width="560" cellpadding="0" cellspacing="0"
                   style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                  
-                  <!-- Header -->
+
                   <tr>
                     <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px;text-align:center;">
                       <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">
@@ -68,7 +52,6 @@ export const sendVerificationEmail = async (
                     </td>
                   </tr>
 
-                  <!-- Body -->
                   <tr>
                     <td style="padding:40px 32px;">
                       <h2 style="margin:0 0 8px;color:#111827;font-size:20px;">
@@ -79,7 +62,6 @@ export const sendVerificationEmail = async (
                         to activate your account and access all CADEC features.
                       </p>
 
-                      <!-- Button -->
                       <table cellpadding="0" cellspacing="0" width="100%">
                         <tr>
                           <td align="center" style="padding:8px 0 32px;">
@@ -110,7 +92,6 @@ export const sendVerificationEmail = async (
                     </td>
                   </tr>
 
-                  <!-- Footer -->
                   <tr>
                     <td style="background:#f9fafb;padding:20px 32px;border-top:1px solid #e5e7eb;text-align:center;">
                       <p style="margin:0;color:#9ca3af;font-size:12px;">
@@ -127,6 +108,10 @@ export const sendVerificationEmail = async (
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Failed to send verification email: ${error.message}`);
+  }
 };
 
 /* ----------------------------------------
@@ -134,14 +119,14 @@ export const sendVerificationEmail = async (
 -----------------------------------------*/
 export const sendPasswordResetEmail = async (
   email: string,
-  name:  string,
+  name: string,
   token: string
 ): Promise<void> => {
   const resetUrl = `${FRONTEND}/auth/reset-password?token=${token}`;
 
-  await transporter.sendMail({
-    from:    FROM,
-    to:      email,
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: email,
     subject: "Reset your CADEC password",
     html: `
       <!DOCTYPE html>
@@ -152,7 +137,7 @@ export const sendPasswordResetEmail = async (
               <td align="center">
                 <table width="560" cellpadding="0" cellspacing="0"
                   style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                  
+
                   <tr>
                     <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px;text-align:center;">
                       <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">CADEC PGDAV</h1>
@@ -208,14 +193,14 @@ export const sendPasswordResetEmail = async (
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Failed to send password reset email: ${error.message}`);
+  }
 };
 
 /* ----------------------------------------
    Contact Form Email
------------------------------------------*/
-/* ----------------------------------------
-   HTML escape helper — prevents user input
-   from breaking the email markup
 -----------------------------------------*/
 const escapeHtml = (value: string): string =>
   value
@@ -225,9 +210,6 @@ const escapeHtml = (value: string): string =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-/* ----------------------------------------
-   Contact Form Email
------------------------------------------*/
 interface ContactEmailData {
   firstName: string;
   lastName: string;
@@ -248,13 +230,12 @@ export const sendContactEmail = async (
     email: escapeHtml(email),
     phone: phone ? escapeHtml(phone) : "Not provided",
     subject: escapeHtml(subject),
-    // preserve line breaks in the message body
     message: escapeHtml(message).replace(/\n/g, "<br/>"),
   };
 
-  await transporter.sendMail({
+  const { error } = await resend.emails.send({
     from: FROM,
-    to: process.env.EMAIL_TO,
+    to: process.env.EMAIL_TO!,
     replyTo: email,
     subject: `New Contact Form Submission: ${subject}`,
     html: `
@@ -271,7 +252,6 @@ export const sendContactEmail = async (
                 <table width="560" cellpadding="0" cellspacing="0"
                   style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
-                  <!-- Header -->
                   <tr>
                     <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px;text-align:center;">
                       <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">
@@ -283,11 +263,9 @@ export const sendContactEmail = async (
                     </td>
                   </tr>
 
-                  <!-- Body -->
                   <tr>
                     <td style="padding:32px;">
 
-                      <!-- Details table -->
                       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:24px;">
                         <tr>
                           <td style="padding:10px 0;border-bottom:1px solid #e5e7eb;width:100px;color:#9ca3af;font-size:13px;font-weight:600;vertical-align:top;">
@@ -323,7 +301,6 @@ export const sendContactEmail = async (
                         </tr>
                       </table>
 
-                      <!-- Message -->
                       <p style="margin:0 0 8px;color:#9ca3af;font-size:13px;font-weight:600;">
                         Message
                       </p>
@@ -331,7 +308,6 @@ export const sendContactEmail = async (
                         ${safe.message}
                       </div>
 
-                      <!-- Reply CTA -->
                       <table cellpadding="0" cellspacing="0" width="100%">
                         <tr>
                           <td align="center" style="padding:28px 0 4px;">
@@ -348,7 +324,6 @@ export const sendContactEmail = async (
                     </td>
                   </tr>
 
-                  <!-- Footer -->
                   <tr>
                     <td style="background:#f9fafb;padding:20px 32px;border-top:1px solid #e5e7eb;text-align:center;">
                       <p style="margin:0;color:#9ca3af;font-size:12px;">
@@ -368,14 +343,22 @@ export const sendContactEmail = async (
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Failed to send contact email: ${error.message}`);
+  }
 };
+
 /* ----------------------------------------
-   Verify transporter on startup
+   Verify connection on startup
 -----------------------------------------*/
 export const verifyEmailConnection = async (): Promise<void> => {
   try {
-    await transporter.verify();
-    console.log("✅ Email service connected");
+    if (!process.env.RESEND_API_KEY) {
+      console.warn("⚠️  RESEND_API_KEY not set — email service disabled");
+      return;
+    }
+    console.log("✅ Email service (Resend) configured");
   } catch (error) {
     console.warn("⚠️  Email service not connected:", error);
   }
