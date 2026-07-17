@@ -148,6 +148,27 @@ app.get("/api/test-smtp-raw", (req, res) => {
   });
 });
 
+app.get("/api/test-smtp-raw-587", (req, res) => {
+  const socket = net.createConnection(
+    { host: "smtp.hostinger.com", port: 587, family: 4 },
+    () => {
+      res.json({ success: true, message: "Raw TCP connection succeeded on 587" });
+      socket.end();
+    }
+  );
+
+  socket.setTimeout(8000);
+
+  socket.on("timeout", () => {
+    socket.destroy();
+    res.status(500).json({ success: false, error: "Raw TCP connection timed out on 587" });
+  });
+
+  socket.on("error", (err: any) => {
+    res.status(500).json({ success: false, error: err.message, code: err.code });
+  });
+});
+
 /* ----------------------------
    Error Handler
 ----------------------------- */
