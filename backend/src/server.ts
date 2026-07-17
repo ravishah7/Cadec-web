@@ -125,6 +125,29 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+import net from "net";
+
+app.get("/api/test-smtp-raw", (req, res) => {
+  const socket = net.createConnection(
+    { host: "smtp.hostinger.com", port: 465, family: 4 },
+    () => {
+      res.json({ success: true, message: "Raw TCP connection succeeded" });
+      socket.end();
+    }
+  );
+
+  socket.setTimeout(8000);
+
+  socket.on("timeout", () => {
+    socket.destroy();
+    res.status(500).json({ success: false, error: "Raw TCP connection timed out" });
+  });
+
+  socket.on("error", (err: any) => {
+    res.status(500).json({ success: false, error: err.message, code: err.code });
+  });
+});
+
 /* ----------------------------
    Error Handler
 ----------------------------- */
